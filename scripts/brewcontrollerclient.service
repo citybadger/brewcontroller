@@ -1,0 +1,11 @@
+[Unit]
+Description=brewcontroller
+ConditionPathExists=|/var/lib/cloud9/brewcontroller
+
+[Service]
+WorkingDirectory=/var/lib/cloud9/brewcontroller/client
+ExecStart=/usr/bin/node httpserver.js
+
+[Install]
+WantedBy=multi-user.target
+
