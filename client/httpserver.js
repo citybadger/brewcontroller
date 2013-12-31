@@ -1,6 +1,7 @@
-var bb = require('bonescript');
+var connect = require('connect');
+var sio = require('socket.io');
+var app = connect.createServer(
+    connect.static('http')
+).listen(8080);
 
-setup = function() {
-    var server = new bb.Server(6485, "http");
-    server.begin();
-};
+var io = sio.listen(app);

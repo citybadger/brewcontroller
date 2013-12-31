@@ -1,4 +1,5 @@
-var bone = require('bonescript/bonescriptLite').bone;
+var bone = require('bonescript');
+require('/usr/lib/node_modules/bonescript/node_modules/socket.io');
 
 var lowerLimit=7;
 var upperLimit=11;
@@ -7,11 +8,14 @@ var switchPin = bone.P8_3;
 var onboardLed = bone.USR3;
 var listeningPort = 8009;
 
-pinMode(switchPin, OUTPUT);
-pinMode(onboardLed, OUTPUT);
+try {
+bone.pinMode(switchPin, bone.OUTPUT);
+bone.pinMode(onboardLed, bone.OUTPUT);
 
-digitalWrite(switchPin, LOW);
-digitalWrite(onboardLed, LOW);
+bone.digitalWrite(switchPin, bone.LOW);
+bone.digitalWrite(onboardLed, bone.LOW);
+} catch (e) {
+}
 
 var io = require('socket.io').listen(listeningPort);
 var sensorConfig=require('./sensors');
@@ -25,15 +29,15 @@ console.log('Started Listening on port',listeningPort);
 function switchOff(socket) {
   if (switchStatus!=LOW) socket.emit('switchStateChange','off');
   switchStatus=LOW;
-  digitalWrite(switchPin, LOW);
-  digitalWrite(onboardLed, LOW);
+  bone.digitalWrite(switchPin, LOW);
+  bone.digitalWrite(onboardLed, LOW);
 }
 
 function switchOn(socket) {
   if (switchStatus!=HIGH) socket.emit('switchStateChange','on');
   switchStatus=HIGH;
-  digitalWrite(switchPin, HIGH);
-  digitalWrite(onboardLed, HIGH);
+  bone.digitalWrite(switchPin, HIGH);
+  bone.digitalWrite(onboardLed, HIGH);
 }
 
 io.sockets.on('connection', function (socket) {
